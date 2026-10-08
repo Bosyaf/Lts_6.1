@@ -212,6 +212,7 @@ CONFIG_SOCK_CGROUP_DATA=y
 CONFIG_NAMESPACES=y
 CONFIG_UTS_NS=y
 CONFIG_TIME_NS=y
+CONFIG_IPC_NS=y
 # CONFIG_USER_NS is not set
 # CONFIG_PID_NS is not set
 CONFIG_SCHED_CASS=y
@@ -435,7 +436,6 @@ CONFIG_HZ_250=y
 # CONFIG_HZ_300 is not set
 # CONFIG_HZ_1000 is not set
 CONFIG_HZ=250
-CONFIG_POWER_AVS=y
 CONFIG_SCHED_HRTICK=y
 CONFIG_ARCH_SPARSEMEM_ENABLE=y
 CONFIG_HW_PERF_EVENTS=y
@@ -479,7 +479,7 @@ CONFIG_ARM64_USE_LSE_ATOMICS=y
 #
 CONFIG_AS_HAS_ARMV8_2=y
 CONFIG_AS_HAS_SHA3=y
-# CONFIG_ARM64_PMEM is not set
+CONFIG_ARM64_PMEM=y
 CONFIG_ARM64_RAS_EXTN=y
 CONFIG_ARM64_CNP=y
 # end of ARMv8.2 architectural features
@@ -561,7 +561,7 @@ CONFIG_PM_STD_PARTITION=""
 CONFIG_PM_SLEEP=y
 CONFIG_PM_SLEEP_SMP=y
 # CONFIG_PM_AUTOSLEEP is not set
-# CONFIG_PM_USERSPACE_AUTOSLEEP is not set
+CONFIG_PM_USERSPACE_AUTOSLEEP=y
 CONFIG_PM_WAKELOCKS=y
 CONFIG_PM_WAKELOCKS_LIMIT=0
 # CONFIG_PM_WAKELOCKS_GC is not set
@@ -569,7 +569,7 @@ CONFIG_PM=y
 # CONFIG_PM_DEBUG is not set
 CONFIG_PM_CLK=y
 CONFIG_PM_GENERIC_DOMAINS=y
-CONFIG_WQ_POWER_EFFICIENT_DEFAULT=y
+# CONFIG_WQ_POWER_EFFICIENT_DEFAULT is not set
 CONFIG_PM_GENERIC_DOMAINS_SLEEP=y
 CONFIG_PM_GENERIC_DOMAINS_OF=y
 CONFIG_CPU_PM=y
@@ -2232,7 +2232,7 @@ CONFIG_NET_VENDOR_INTEL=y
 # CONFIG_ICE is not set
 # CONFIG_FM10K is not set
 # CONFIG_IGC is not set
-CONFIG_NET_VENDOR_WANGXUN=y
+# CONFIG_NET_VENDOR_WANGXUN is not set
 # CONFIG_NGBE is not set
 # CONFIG_TXGBE is not set
 # CONFIG_JME is not set
@@ -3597,7 +3597,7 @@ CONFIG_CEC_PIN=y
 #
 # CEC support
 #
-CONFIG_MEDIA_CEC_RC=y
+# CONFIG_MEDIA_CEC_RC is not set
 # CONFIG_CEC_PIN_ERROR_INJ is not set
 CONFIG_MEDIA_CEC_SUPPORT=y
 # CONFIG_CEC_CH7322 is not set
@@ -5397,7 +5397,7 @@ CONFIG_DMA_OF=y
 #
 CONFIG_SYNC_FILE=y
 # CONFIG_SW_SYNC is not set
-# CONFIG_UDMABUF is not set
+CONFIG_UDMABUF=y
 # CONFIG_DMABUF_MOVE_NOTIFY is not set
 # CONFIG_DMABUF_DEBUG is not set
 # CONFIG_DMABUF_SELFTESTS is not set
@@ -6566,7 +6566,10 @@ CONFIG_FAT_DEFAULT_IOCHARSET="iso8859-1"
 CONFIG_EXFAT_FS=y
 CONFIG_EXFAT_DEFAULT_IOCHARSET="utf8"
 # CONFIG_NTFS_FS is not set
-# CONFIG_NTFS3_FS is not set
+CONFIG_NTFS3_FS=y
+# CONFIG_NTFS3_64BIT_CLUSTER is not set
+CONFIG_NTFS3_LZX_XPRESS=y
+# CONFIG_NTFS3_FS_POSIX_ACL is not set
 # end of DOS/FAT/EXFAT/NT Filesystems
 
 #
@@ -6633,7 +6636,7 @@ CONFIG_EROFS_FS_XATTR=y
 CONFIG_EROFS_FS_POSIX_ACL=y
 CONFIG_EROFS_FS_SECURITY=y
 CONFIG_EROFS_FS_ZIP=y
-# CONFIG_EROFS_FS_ZIP_LZMA is not set
+CONFIG_EROFS_FS_ZIP_LZMA=y
 CONFIG_EROFS_FS_PCPU_KTHREAD=y
 CONFIG_EROFS_FS_PCPU_KTHREAD_HIPRI=y
 CONFIG_NETWORK_FILESYSTEMS=y
@@ -7103,7 +7106,7 @@ CONFIG_XZ_DEC_IA64=y
 CONFIG_XZ_DEC_ARM=y
 CONFIG_XZ_DEC_ARMTHUMB=y
 CONFIG_XZ_DEC_SPARC=y
-# CONFIG_XZ_DEC_MICROLZMA is not set
+CONFIG_XZ_DEC_MICROLZMA=y
 CONFIG_XZ_DEC_BCJ=y
 # CONFIG_XZ_DEC_TEST is not set
 CONFIG_DECOMPRESS_GZIP=y
@@ -7515,6 +7518,51 @@ CONFIG_OPLUS_SYSTEM_KERNEL_QCOM=y
 CONFIG_OPLUS_FEATURE_SCHED_EXT=y
 # Rust hacking
 #
-# end of Rust hacking
-# end of Kernel hacking
+# Linux Random Number Generator (LRNG) - Gaming & Battery Optimized
+# ============================================================
+CONFIG_RANDOM_DEFAULT_IMPL=y
 CONFIG_LRNG=y
+CONFIG_LRNG_SHA256=y
+
+# ------------------------------------------------------------
+# LRNG Interfaces
+# ------------------------------------------------------------
+CONFIG_LRNG_DEV_IF=y
+CONFIG_LRNG_HWRAND_IF=y
+# CONFIG_LRNG_KCAPI_IF is not set
+
+# ------------------------------------------------------------
+# Entropy Sources (Pili Bitiren IRQ ve SCHED Kapatildi!)
+# Snapdragon Donanim RNG (HWRAND) + CPU Yeterlidir.
+# ------------------------------------------------------------
+CONFIG_LRNG_CPU=y
+CONFIG_LRNG_CPU_FULL_ENT_MULTIPLIER=1
+CONFIG_LRNG_CPU_ENTROPY_RATE=8
+# CONFIG_LRNG_SCHED is not set
+# CONFIG_LRNG_IRQ is not set
+# CONFIG_LRNG_JENT is not set
+# CONFIG_LRNG_KERNEL_RNG is not set
+
+# Timer Cutoff Ayarlari
+CONFIG_LRNG_RCT_CUTOFF=31
+CONFIG_LRNG_RCT_CUTOFF_PERMANENT=81
+CONFIG_LRNG_APT_CUTOFF=325
+CONFIG_LRNG_APT_CUTOFF_PERMANENT=371
+
+# ------------------------------------------------------------
+# DRNG & Algoritma Secimi (ChaCha20 + Hardware SIMD)
+# ------------------------------------------------------------
+CONFIG_LRNG_DRNG_CHACHA20=y
+CONFIG_LRNG_DFLT_DRNG_CHACHA20=y
+# CONFIG_LRNG_DFLT_DRNG_DRBG is not set
+# CONFIG_LRNG_DFLT_DRNG_KCAPI is not set
+
+# ------------------------------------------------------------
+# Gereksiz/Yuk Yapan Ozellikleri Kapatma
+# ------------------------------------------------------------
+# CONFIG_LRNG_AIS2031_NTG1_SEEDING_STRATEGY is not set
+# CONFIG_LRNG_RUNTIME_ES_CONFIG is not set
+# CONFIG_LRNG_SWITCH_HASH is not set
+# CONFIG_LRNG_SWITCH_DRNG is not set
+# CONFIG_LRNG_TESTING_MENU is not set
+# CONFIG_LRNG_SELFTEST is not set
